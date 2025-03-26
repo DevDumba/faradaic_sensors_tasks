@@ -46,6 +46,7 @@ remote connections or data replication mechanisms.
 
 Each schema has a corresponding audit table to log any changes, allowing
 for full data lineage and rollback capabilities if needed.  
+
 -----------------------------------------------------------------------
 
 b)  **Data Producer**
