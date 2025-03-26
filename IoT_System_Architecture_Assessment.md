@@ -57,7 +57,7 @@ b)  **Data Producer**
 - Each row represents a new uplink message, identified via a unique
   auto-incrementing ID or timestamp.
 
-  -----------------------------------------------------------------------
+-----------------------------------------------------------------------
 
 c)  **Data Synchronizer: Spring Boot Cron Job**
 
@@ -70,7 +70,7 @@ c)  **Data Synchronizer: Spring Boot Cron Job**
 - After fetching new rows, it transforms and inserts them into
   business_data.processed_data.
 
-  -----------------------------------------------------------------------
+-----------------------------------------------------------------------
 
 d)  **Data Consumer: Business Application**
 
@@ -82,7 +82,7 @@ d)  **Data Consumer: Business Application**
 - Since data is already validated, transformed and structured during
   sync, the app can serve users with minimal processing time
 
-  -----------------------------------------------------------------------
+-----------------------------------------------------------------------
 
 e)  **Logging and Monitoring**
 
@@ -121,16 +121,17 @@ incorrect.](./media/media/image2.png)
 
 Estimated size: **\~150 bytes** per packet
 
-  -----------------------------------------------------------------------
+-----------------------------------------------------------------------
   **Interval**            **Packets**             **Estimated Data
                                                   Volume**
-  ----------------------- ----------------------- -----------------------
+----------------------- ----------------------- -----------------------
   Per second              \~3 packets             \~450 bytes
 
   Per minute              \~167 packets           \~25 kilobytes
 
   Per hour                \~10,000 packets        \~1.5 megabytes
-  -----------------------------------------------------------------------  
+  
+-----------------------------------------------------------------------  
 
 d)  **System Impact**
 
@@ -141,7 +142,7 @@ d)  **System Impact**
 - No performance optimizations are needed at this scale, and the system
   can easily handle the expected load with room to spare.
 
-  -----------------------------------------------------------------------
+-----------------------------------------------------------------------
 
 ### 1.4. Potential Bottlenecks
 
@@ -253,7 +254,7 @@ b)  **MySQL Performance Tuning**
 - Audit tables remain useful for traceability without bloating main
   tables
 
-  -----------------------------------------------------------------------
+-----------------------------------------------------------------------
 
 c)  **Storage and Archiving**
 
@@ -349,7 +350,7 @@ c)  **Receiving Uplink Packets from Devices**
 
 - If no valid downlink exists, the device does not receive any response.
 
-  -----------------------------------------------------------------------
+-----------------------------------------------------------------------
 
 ### 2.2. API Design for Downlink Scheduling
 
