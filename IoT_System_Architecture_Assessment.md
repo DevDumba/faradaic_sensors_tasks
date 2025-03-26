@@ -45,7 +45,7 @@ Both schemas reside in the same MySQL instance, eliminating the need for
 remote connections or data replication mechanisms.
 
 Each schema has a corresponding audit table to log any changes, allowing
-for full data lineage and rollback capabilities if needed.
+for full data lineage and rollback capabilities if needed.  
 
 b)  **Data Producer**
 
@@ -53,7 +53,7 @@ b)  **Data Producer**
   in network_data.sensor_data.
 
 - Each row represents a new uplink message, identified via a unique
-  auto-incrementing ID or timestamp.
+  auto-incrementing ID or timestamp.  
 
 c)  **Data Synchronizer: Spring Boot Cron Job**
 
@@ -64,7 +64,7 @@ c)  **Data Synchronizer: Spring Boot Cron Job**
   tracked last_synced_id.
 
 - After fetching new rows, it transforms and inserts them into
-  business_data.processed_data.
+  business_data.processed_data.  
 
 d)  **Data Consumer: Business Application**
 
@@ -74,11 +74,11 @@ d)  **Data Consumer: Business Application**
   (e.g., /ingest-data) to receive new data.
 
 - Since data is already validated, transformed and structured during
-  sync, the app can serve users with minimal processing time
+  sync, the app can serve users with minimal processing time  
 
 e)  **Logging and Monitoring**
 
-- The job logs execution time, row counts, and any exceptions.
+- The job logs execution time, row counts, and any exceptions.  
 
 ### 1.3. Estimated Throughput Metrics
 
@@ -88,7 +88,7 @@ a)  **Input load**
 
 - **Transmission frequency**: 1 packet per hour per device
 
-- **Distribution**: Evenly distributed across time (no spikes)
+- **Distribution**: Evenly distributed across time (no spikes)  
 
 b)  **Calculated Packet Rate**
 
@@ -96,7 +96,7 @@ b)  **Calculated Packet Rate**
 
 - **Per minute: 10,000 / 60 ≈ 167 packets**
 
-- **Per second: 167 / 60 ≈ 3 packets**
+- **Per second: 167 / 60 ≈ 3 packets**  
 
 c)  **Packet Size Estimation**
 
@@ -116,7 +116,7 @@ Estimated size: **\~150 bytes** per packet
   Per minute              \~167 packets           \~25 kilobytes
 
   Per hour                \~10,000 packets        \~1.5 megabytes
-  -----------------------------------------------------------------------
+  -----------------------------------------------------------------------  
 
 d)  **System Impact**
 
@@ -125,7 +125,7 @@ d)  **System Impact**
   application.
 
 - No performance optimizations are needed at this scale, and the system
-  can easily handle the expected load with room to spare.
+  can easily handle the expected load with room to spare.  
 
 ### 1.4. Potential Bottlenecks
 
@@ -147,7 +147,7 @@ Mitigation:
 - Optimize queries for batch operations
 
 - Audit tables provide historical tracking and can reduce the need to
-  retain all records in main tables
+  retain all records in main tables  
 
 b)  **Cron Job Execution**
 
@@ -161,7 +161,7 @@ Mitigation:
 
 - Monitor execution time
 
-- Configure best fixed rate
+- Configure best fixed rate  
 
 c)  **Database Growth**
 
@@ -179,7 +179,7 @@ Mitigation:
 - Use time-based partitioning
 
 - Audit tables and archiving strategy help separate live and historical
-  data
+  data  
 
 d)  **Shared VPS Resource Constraints**
 
@@ -195,13 +195,13 @@ VPS**, sharing:
 High usage from one process (e.g., business app under user load) may
 starve the sync process or MySQL.
 
-Mitigation: Monitor resource usage and consider moving to separate VPS
+Mitigation: Monitor resource usage and consider moving to separate VPS  
 
 ### 1.5. Scalability Strategy for 100,000 Devices
 
 The proposed architecture can scale to support 100,000 IoT devices with
 moderate adjustments, while maintaining simplicity and robustness. Below
-are the key areas to consider when scaling the system.
+are the key areas to consider when scaling the system.  
 
 a)  **Increased Data Volume**
 
@@ -214,7 +214,7 @@ With 100,000 devices sending one packet per hour:
 - **Per day**: \~360 MB
 
 This is still a manageable load for a MySQL-backed system, especially
-with optimized queries and batch processing.
+with optimized queries and batch processing.  
 
 b)  **MySQL Performance Tuning**
 
@@ -225,13 +225,13 @@ b)  **MySQL Performance Tuning**
 - Perform batch inserts to reduce transaction overhead
 
 - Audit tables remain useful for traceability without bloating main
-  tables
+  tables  
 
 c)  **Storage and Archiving**
 
 Anticipate \~30 million rows added monthly to sensor_data.
 
-- Archiving and audit logs offload historical data
+- Archiving and audit logs offload historical data  
 
 d)  **VPS Resource Scaling**
 
@@ -242,7 +242,7 @@ Recommended actions:
 
 - Monitor CPU, memory, and I/O usage
 
-- Upgrade hardware or move to cloud infrastructure if needed
+- Upgrade hardware or move to cloud infrastructure if needed  
 
 e)  **Business Application Load**
 
@@ -250,7 +250,7 @@ With more data and more users:
 
 - Implement **in-memory caching** for frequently accessed data
 
-- Use **pagination** in API responses and frontend views
+- Use **pagination** in API responses and frontend views  
 
 ## 2. Downlink Management System
 
@@ -261,7 +261,7 @@ With more data and more users:
 The goal is to design a mechanism that reliably and efficiently
 transfers new data entries from the network server's database to the
 business application layer, while ensuring maintainability, scalability,
-and auditability.
+and auditability.  
 
 ### 2.1. System Design -- Downlink Management
 
@@ -269,7 +269,7 @@ To support the delivery of downlink packets from users to IoT devices,
 the system introduces a scheduling mechanism that allows downlink
 requests to be submitted from the business application and executed by
 the network server once the device becomes eligible to receive them
-(immediately after an uplink transmission).
+(immediately after an uplink transmission).  
 
 a)  **Scheduling via Business Application**
 
@@ -279,7 +279,7 @@ a)  **Scheduling via Business Application**
 - The request is submitted to the business application backend
 
 - The business app then calls the network server's API to register the
-  downlink.
+  downlink.  
 
 b)  **Downlink Queue Table**
 
@@ -293,7 +293,7 @@ Example structure:
 
 - expire_at: optional expiry time
 
-- status: pending / sent / failed / expired
+- status: pending / sent / failed / expired  
 
 c)  **Receiving Uplink Packets from Devices**
 
@@ -309,7 +309,7 @@ c)  **Receiving Uplink Packets from Devices**
 
   - Updates the status of downlink to sent
 
-- If no valid downlink exists, the device does not receive any response.
+- If no valid downlink exists, the device does not receive any response.  
 
 ### 2.2. API Design for Downlink Scheduling
 
@@ -335,7 +335,7 @@ incorrect.](./media/media/image4.png)
 
 - 400 Bad Request (Validation Error)
 
-- 500 Internal Server Error
+- 500 Internal Server Error  
 
 **API Behavior and Rules**
 
