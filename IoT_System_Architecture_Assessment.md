@@ -1,8 +1,8 @@
 # IoT System Architecture Assessment
 
-## Data Transfer Architecture
+## 1. Data Transfer Architecture
 
-### Introduction
+### 1.1. Introduction
 
 This part presents an architectural solution for transferring new data
 from the network server's MySQL database to the business application,
@@ -27,10 +27,9 @@ transfers new data entries from the network server's database to the
 business application layer, while ensuring maintainability and
 scalability in case of future growth.
 
-### Architectural Approach
+### 1.2. Architectural Approach
 
-![](./media/media/image1.png){width="6.5in"
-height="4.333333333333333in"}
+![](./media/media/image1.png)
 
 a)  **Database Structure**
 
@@ -81,7 +80,7 @@ e)  **Logging and Monitoring**
 
 - The job logs execution time, row counts, and any exceptions.
 
-### Estimated Throughput Metrics
+### 1.3. Estimated Throughput Metrics
 
 a)  **Input load**
 
@@ -104,8 +103,7 @@ c)  **Packet Size Estimation**
 Example packet contains:
 
 ![A screen shot of a computer program AI-generated content may be
-incorrect.](./media/media/image2.png){width="3.86383530183727in"
-height="2.276317804024497in"}
+incorrect.](./media/media/image2.png)
 
 Estimated size: **\~150 bytes** per packet
 
@@ -129,7 +127,7 @@ d)  **System Impact**
 - No performance optimizations are needed at this scale, and the system
   can easily handle the expected load with room to spare.
 
-### Potential Bottlenecks
+### 1.4. Potential Bottlenecks
 
 a)  **MySQL Read/Write Performance**
 
@@ -199,7 +197,7 @@ starve the sync process or MySQL.
 
 Mitigation: Monitor resource usage and consider moving to separate VPS
 
-### Scalability Strategy for 100,000 Devices
+### 1.5. Scalability Strategy for 100,000 Devices
 
 The proposed architecture can scale to support 100,000 IoT devices with
 moderate adjustments, while maintaining simplicity and robustness. Below
@@ -254,7 +252,7 @@ With more data and more users:
 
 - Use **pagination** in API responses and frontend views
 
-## Downlink Management System
+## 2. Downlink Management System
 
 #### 
 
@@ -265,7 +263,7 @@ transfers new data entries from the network server's database to the
 business application layer, while ensuring maintainability, scalability,
 and auditability.
 
-### System Design -- Downlink Management
+### 2.1. System Design -- Downlink Management
 
 To support the delivery of downlink packets from users to IoT devices,
 the system introduces a scheduling mechanism that allows downlink
@@ -313,7 +311,7 @@ c)  **Receiving Uplink Packets from Devices**
 
 - If no valid downlink exists, the device does not receive any response.
 
-### API Design for Downlink Scheduling
+### 2.2. API Design for Downlink Scheduling
 
 **Endpoint**: POST /api/downlinks
 
@@ -326,16 +324,14 @@ c)  **Receiving Uplink Packets from Devices**
 **Request Body**:
 
 ![A screenshot of a computer program AI-generated content may be
-incorrect.](./media/media/image3.png){width="3.474750656167979in"
-height="1.549714566929134in"}
+incorrect.](./media/media/image3.png)
 
 **Response**
 
 - 201 Created (Success):
 
 ![A screen shot of a computer AI-generated content may be
-incorrect.](./media/media/image4.png){width="3.497351268591426in"
-height="1.4670089676290463in"}
+incorrect.](./media/media/image4.png)
 
 - 400 Bad Request (Validation Error)
 
