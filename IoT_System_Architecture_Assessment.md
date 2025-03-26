@@ -121,15 +121,11 @@ incorrect.](./media/media/image2.png)
 
 Estimated size: **\~150 bytes** per packet
 
------------------------------------------------------------------------
-  **Interval**            **Packets**             **Estimated Data
-                                                  Volume**
------------------------ ----------------------- -----------------------
-  Per second              \~3 packets             \~450 bytes
-
-  Per minute              \~167 packets           \~25 kilobytes
-
-  Per hour                \~10,000 packets        \~1.5 megabytes
+| **Interval** | **Packets**       | **Estimated Data Volume** |
+|--------------|-------------------|----------------------------|
+| Per second   | ~3 packets        | ~450 bytes                |
+| Per minute   | ~167 packets      | ~25 kilobytes             |
+| Per hour     | ~10,000 packets   | ~1.5 megabytes            |
   
 -----------------------------------------------------------------------  
 
